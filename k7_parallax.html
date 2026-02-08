@@ -2,42 +2,69 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>K7: Parallax Effect - 704-MSSV</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <title>K7: Parallax Effect</title>
     <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+      }
+      /* Lớp nền Parallax: Tăng chiều cao lên 120% để không bị hở trắng khi cuộn lên */
       #parallax-bg {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: 600px;
+        height: 120%;
         background: url("https://picsum.photos/1200/800") center/cover;
         z-index: -1;
+        will-change: transform;
       }
-      .content-box {
+      /* Phần nội dung đè lên trên */
+      .content {
         margin-top: 400px;
-        background: rgba(255, 255, 255, 0.9);
+        background: white;
         padding: 50px;
-        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+      }
+      /* Nút bấm đồng bộ với phong cách Menu chính */
+      .btn-index {
+        display: inline-block;
+        text-decoration: none;
+        padding: 15px 30px;
+        background: #6200ea;
+        color: white;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: 0.3s;
+        margin-top: 20px;
+      }
+      .btn-index:hover {
+        background: #3700b3;
+        transform: scale(1.05);
       }
     </style>
   </head>
   <body>
-    <nav><a href="baitap21.html">Quay lại BT 21</a></nav>
     <div id="parallax-bg"></div>
-    <div class="container content-box">
+
+    <div class="content">
       <h2>Hiệu ứng Parallax</h2>
-      <p>Cuộn chuột xuống để thấy ảnh nền di chuyển chậm hơn nội dung, tạo chiều sâu cho trang web.</p>
-      <div style="height: 800px"></div>
-      <a href="baitap21.html" class="btn" style="display: inline-block; margin-top: 30px; text-decoration: none"
-        >⬅ Quay lại danh sách BT21</a
-      >
+      <p>Cuộn xuống để thấy ảnh nền di chuyển chậm hơn nội dung, tạo chiều sâu cho trang web.</p>
+
+      <div style="height: 600px"></div>
+
+      <a href="index.html" class="btn-index">⬅ QUAY LẠI MENU CHÍNH</a>
     </div>
+
     <script>
-      window.addEventListener("scroll", function () {
+      window.addEventListener("scroll", () => {
         const scrolled = window.scrollY;
-        const parallax = document.getElementById("parallax-bg");
-        parallax.style.transform = "translateY(" + scrolled * 0.5 + "px)";
+        /* Sử dụng hệ số âm (-0.2) để ảnh nền di chuyển lên trên chậm hơn, 
+           giúp ảnh luôn che phủ kín khung hình thay vì bị tụt xuống để lại khoảng trắng.
+        */
+        document.getElementById("parallax-bg").style.transform = `translateY(${scrolled * -0.2}px)`;
       });
     </script>
   </body>
