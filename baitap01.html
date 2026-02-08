@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>bt1</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .carousel {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        margin-top: 20px;
+      }
+      .slides {
+        display: flex;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .slides img {
+        width: 100%;
+        flex-shrink: 0;
+        height: 450px;
+        object-fit: cover;
+      }
+      .btn-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(5px);
+        border: none;
+        color: white;
+        padding: 15px;
+        cursor: pointer;
+        border-radius: 50%;
+      }
+      .prev {
+        left: 10px;
+      }
+      .next {
+        right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1. Cách xử lý Index để tránh ngoài giới hạn:
+
+      Sử dụng toán tử Chia lấy dư (Modulo): Đây là kỹ thuật cốt lõi để tạo vòng lặp vô tận cho carousel.
+
+      Công thức: index = (index + step + total) % total.
+
+      Khi Next: Nếu đang ở ảnh cuối cùng, index + 1 bằng total, kết quả của phép chia lấy dư sẽ quay về 0.
+
+      Khi Prev: Cộng thêm total trước khi chia lấy dư giúp đảm bảo chỉ số không bao giờ bị âm khi lùi từ ảnh đầu tiên về ảnh cuối cùng.
+
+      2. Tối ưu Performance:
+
+      CSS Transform: Thay vì thay đổi thuộc tính left hay margin, tôi sử dụng transform: translateX(). Thuộc tính này được trình duyệt xử lý bằng GPU (card đồ họa), giúp chuyển động mượt mà hơn và không gây hiện tượng "giật" do tính toán lại bố cục (reflow).
+
+      CSS Transition: Kết hợp với cubic-bezier để tạo cảm giác chuyển động tự nhiên, chuyên nghiệp mà không cần dùng các thư viện JavaScript nặng nề.
+
+      3. Tính Responsive:
+
+      Sử dụng đơn vị % cho translateX và flex-shrink: 0 cho các thẻ img. Điều này đảm bảo mỗi ảnh luôn chiếm đúng 100% chiều rộng của khung hình bất kể kích thước màn hình máy tính hay điện thoại. -->
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="about.html">Giới thiệu</a>
+      <a href="baitap01.html">Carousel</a>
+      <a href="baitap02.html">To-Do List</a>
+      <a href="baitap03.html">Đoán Số</a>
+      <a href="baitap20.html" style="background: #e67e22; color: white">BT 20 (Trắc nghiệm)</a>
+      <a href="baitap21.html" style="background: #e67e22; color: white">BT 21 (Thực hành)</a>
+      <a href="contact.html">Liên hệ</a>
+    </nav>
+
+    <div class="container">
+      <h2>Bộ sưu tập ảnh</h2>
+      <div class="carousel">
+        <div class="slides" id="slideTrack">
+          <img src="https://picsum.photos/800/450?random=1" alt="1" />
+          <img src="https://picsum.photos/800/450?random=2" alt="2" />
+          <img src="https://picsum.photos/800/450?random=3" alt="3" />
+          <img src="https://picsum.photos/800/450?random=4" alt="4" />
+          <img src="https://picsum.photos/800/450?random=5" alt="5" />
+          <img src="https://picsum.photos/800/450?random=6" alt="6" />
+        </div>
+        <button class="btn-nav prev" onclick="move(-1)">❮</button>
+        <button class="btn-nav next" onclick="move(1)">❯</button>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+      let index = 0;
+      const slides = document.getElementById("slideTrack");
+      const total = document.querySelectorAll(".slides img").length;
+      function update() {
+        slides.style.transform = `translateX(${-index * 100}%)`;
+      }
+      function move(step) {
+        index = (index + step + total) % total;
+        update();
+      }
+      setInterval(() => move(1), 3000);
+    </script>
+  </body>
+</html>

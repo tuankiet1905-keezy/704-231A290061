@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TK4: Tab View - 704-MSSV</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .tab-btn-group {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 10px;
+      }
+      .tab-content {
+        display: none;
+        padding: 25px;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        animation: fadeIn 0.3s;
+      }
+      .active-tab {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="baitap21.html">BT 21 (Thực hành)</a>
+      <a href="contact.html">Liên hệ</a>
+    </nav>
+    <div class="container">
+      <h3>Bài tập TK4: Tạo Tab View</h3>
+      <div class="tab-btn-group">
+        <button onclick="openTab('tab1')">Tab 1</button>
+        <button onclick="openTab('tab2')">Tab 2</button>
+        <button onclick="openTab('tab3')">Tab 3</button>
+      </div>
+      <div id="tab1" class="tab-content active-tab">Nội dung Tab 1: Đây là phần hiển thị đầu tiên.</div>
+      <div id="tab2" class="tab-content">Nội dung Tab 2: Bạn đã chuyển sang tab thứ hai.</div>
+      <div id="tab3" class="tab-content">Nội dung Tab 3: Đây là nội dung của tab cuối cùng.</div>
+
+      <a href="baitap21.html" class="btn" style="display: inline-block; margin-top: 30px; text-decoration: none"
+        >⬅ Quay lại danh sách BT21</a
+      >
+    </div>
+    <script>
+      function openTab(tabName) {
+        document.querySelectorAll(".tab-content").forEach((c) => (c.style.display = "none"));
+        document.getElementById(tabName).style.display = "block";
+      }
+    </script>
+  </body>
+</html>

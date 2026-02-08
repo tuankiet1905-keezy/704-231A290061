@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>bt3</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .firework {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        display: none;
+        pointer-events: none;
+      }
+      .firework.show {
+        display: block;
+        animation: explode 1.5s ease-out forwards;
+      }
+      @keyframes explode {
+        0% {
+          box-shadow: 0 0 0 0 white;
+          opacity: 1;
+        }
+        100% {
+          box-shadow:
+            -100px -100px 0 red,
+            100px -100px 0 yellow,
+            -100px 100px 0 blue,
+            100px 100px 0 green;
+          opacity: 0;
+          transform: scale(2);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1. Cách tạo số ngẫu nhiên và xử lý nhập liệu:
+
+          Tạo số: Sử dụng Math.random() * 100 để lấy số thập phân từ 0-100, sau đó dùng Math.floor() và cộng thêm 1 để ép về khoảng số nguyên từ 1 đến 100.
+
+          Validation (Kiểm tra đầu vào): Trước khi so sánh, chương trình sử dụng isNaN() và kiểm tra điều kiện val < 1 || val > 100 để ngăn chặn các trường hợp người dùng nhập chữ hoặc số ngoài vùng quy định, tránh lỗi logic cho game.
+
+          2. Logic so sánh:
+
+          Sử dụng cấu trúc if...else if...else để đưa ra phản hồi ngay lập tức (Quá cao/Quá thấp). Một biến count được dùng để đếm số lần thử, tạo tính cạnh tranh cho trò chơi.
+
+          3. Hiệu ứng pháo hoa bằng CSS:
+
+          Khi người dùng đoán đúng, một lớp (class) .show sẽ được thêm vào thẻ DIV pháo hoa thông qua JavaScript. Hiệu ứng này sử dụng @keyframes với thuộc tính box-shadow tỏa ra nhiều hướng, tạo cảm giác nổ mà không cần sử dụng tệp hình ảnh hay video bên ngoài, giúp trang web tải cực nhanh. -->
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="about.html">Giới thiệu</a>
+      <a href="baitap01.html">Carousel</a>
+      <a href="baitap02.html">To-Do List</a>
+      <a href="baitap03.html">Đoán Số</a>
+      <a href="baitap20.html" style="background: #e67e22; color: white">BT 20 (Trắc nghiệm)</a>
+      <a href="baitap21.html" style="background: #e67e22; color: white">BT 21 (Thực hành)</a>
+      <a href="contact.html">Liên hệ</a>
+    </nav>
+
+    <div class="container" style="text-align: center; max-width: 500px; padding: 40px">
+      <h2>Trò chơi đoán số</h2>
+      <p style="margin-bottom: 25px">Máy đã chọn 1 số từ 1-100. Mời bạn đoán!</p>
+
+      <input
+        type="number"
+        id="guess"
+        placeholder="??"
+        style="
+          width: 150px;
+          text-align: center;
+          font-size: 2.5rem;
+          font-weight: bold;
+          padding: 20px;
+          border-radius: 20px;
+        "
+      />
+
+      <div style="margin-top: 20px">
+        <button onclick="check()" style="padding: 15px 40px; font-size: 1.2rem">Đoán Lệnh</button>
+      </div>
+
+      <p id="msg" style="margin-top: 30px; font-size: 1.2rem; min-height: 1.5em"></p>
+      <button id="resetBtn" onclick="location.reload()" style="display: none; background: #10b981; margin-top: 20px">
+        Chơi lại từ đầu
+      </button>
+    </div>
+
+    <div class="firework" id="fw"></div>
+
+    <script src="js/script.js"></script>
+    <script>
+      const target = Math.floor(Math.random() * 100) + 1;
+      let count = 0;
+      function check() {
+        const val = parseInt(document.getElementById("guess").value);
+        const msg = document.getElementById("msg");
+        if (isNaN(val) || val < 1 || val > 100) return alert("Hãy nhập số từ 1-100");
+        count++;
+        if (val === target) {
+          msg.innerHTML = `🎉 Tuyệt vời! Bạn đúng sau ${count} lần.`;
+          document.getElementById("fw").classList.add("show");
+          document.getElementById("resetBtn").style.display = "inline-block";
+        } else {
+          msg.innerHTML = val < target ? "Thấp quá rồi!" : "Cao quá rồi!";
+        }
+      }
+    </script>
+  </body>
+</html>

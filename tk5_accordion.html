@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TK5: Accordion - 704-MSSV</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .accordion-header {
+        background: #eee;
+        padding: 15px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-weight: bold;
+      }
+      .content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        max-height: 0;
+        background: #fff;
+        border-radius: 0 0 8px 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav><a href="baitap21.html">Quay lại BT 21</a></nav>
+    <div class="container">
+      <h3>Bài tập TK5: Accordion</h3>
+      <div class="accordion-header" onclick="toggleAccordion('acc1')">Bấm vào đây để xem nội dung ▼</div>
+      <div id="acc1" class="content">
+        <p style="padding: 20px">Đây là nội dung ẩn được hiển thị bằng hiệu ứng trượt xuống/lên cực kỳ mượt mà.</p>
+      </div>
+      <a href="baitap21.html" class="btn" style="display: inline-block; margin-top: 30px; text-decoration: none"
+        >⬅ Quay lại danh sách BT21</a
+      >
+    </div>
+    <script>
+      function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        content.classList.toggle("active");
+        content.style.maxHeight = content.classList.contains("active") ? content.scrollHeight + "px" : "0";
+      }
+    </script>
+  </body>
+</html>

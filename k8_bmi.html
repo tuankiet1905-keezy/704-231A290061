@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>K8: Tính BMI - 704-MSSV</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav><a href="baitap21.html">Quay lại BT 21</a></nav>
+    <div class="container" style="max-width: 500px; text-align: center">
+      <h3>Tính chỉ số sức khỏe BMI</h3>
+      <input type="number" id="weight" placeholder="Cân nặng (kg)" step="0.1" />
+      <input type="number" id="height" placeholder="Chiều cao (m)" step="0.01" />
+      <button onclick="calculateBMI()" style="width: 100%; margin-top: 15px">Tính toán kết quả</button>
+      <p id="result" style="margin-top: 25px; font-size: 1.2rem"></p>
+
+      <a
+        href="baitap21.html"
+        class="btn"
+        style="display: inline-block; margin-top: 30px; width: 100%; text-decoration: none"
+        >⬅ Quay lại danh sách BT21</a
+      >
+    </div>
+    <script>
+      function calculateBMI() {
+        const weight = parseFloat(document.getElementById("weight").value);
+        const height = parseFloat(document.getElementById("height").value);
+        if (weight > 0 && height > 0) {
+          const bmi = weight / (height * height);
+          let category = bmi < 18.5 ? "Thiếu cân" : bmi < 25 ? "Bình thường" : "Thừa cân";
+          document.getElementById("result").innerHTML =
+            `Chỉ số BMI: <b>${bmi.toFixed(2)}</b><br>Phân loại: <b>${category}</b>`;
+        } else {
+          alert("Vui lòng nhập thông số hợp lệ!");
+        }
+      }
+    </script>
+  </body>
+</html>

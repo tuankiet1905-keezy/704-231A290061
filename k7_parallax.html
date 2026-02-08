@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>K7: Parallax Effect - 704-MSSV</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      #parallax-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 600px;
+        background: url("https://picsum.photos/1200/800") center/cover;
+        z-index: -1;
+      }
+      .content-box {
+        margin-top: 400px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 50px;
+        border-radius: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav><a href="baitap21.html">Quay lại BT 21</a></nav>
+    <div id="parallax-bg"></div>
+    <div class="container content-box">
+      <h2>Hiệu ứng Parallax</h2>
+      <p>Cuộn chuột xuống để thấy ảnh nền di chuyển chậm hơn nội dung, tạo chiều sâu cho trang web.</p>
+      <div style="height: 800px"></div>
+      <a href="baitap21.html" class="btn" style="display: inline-block; margin-top: 30px; text-decoration: none"
+        >⬅ Quay lại danh sách BT21</a
+      >
+    </div>
+    <script>
+      window.addEventListener("scroll", function () {
+        const scrolled = window.scrollY;
+        const parallax = document.getElementById("parallax-bg");
+        parallax.style.transform = "translateY(" + scrolled * 0.5 + "px)";
+      });
+    </script>
+  </body>
+</html>

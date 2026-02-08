@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>bt2</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Tối ưu riêng cho phần nhập liệu bài 2 */
+      .input-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 30px;
+        background: rgba(255, 255, 255, 0.5); /* Tạo một lớp nền nhẹ cho cả cụm input */
+        padding: 10px;
+        border-radius: 18px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Hiệu ứng lõm nhẹ */
+      }
+
+      #taskInput {
+        flex: 1;
+        margin: 0;
+        background: #ffffff !important; /* Buộc nền trắng để nổi bật chữ */
+        border: 2px solid var(--primary-color); /* Viền màu chủ đạo để dễ nhận diện */
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1); /* Đổ bóng nhẹ phía dưới */
+        color: #1e293b;
+        font-weight: 500;
+      }
+
+      #taskInput::placeholder {
+        color: #94a3b8; /* Màu placeholder dễ nhìn hơn */
+      }
+
+      .task-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .task-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white; /* Item list nền trắng thuần cho sạch sẽ */
+        padding: 18px;
+        border-radius: 14px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+      }
+
+      .task-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-add {
+        white-space: nowrap;
+        padding: 0 30px;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1. Cách xử lý mảng State và render lại DOM:
+
+        Mảng State làm gốc: Tôi sử dụng một mảng tasks duy nhất để lưu trữ toàn bộ dữ liệu. Mọi hành động (Thêm/Xóa) đều tác động vào mảng này trước tiên, thay vì thao tác trực tiếp trên giao diện.
+
+        Hàm render() tập trung: Để tối ưu hóa việc hiển thị, tôi viết một hàm render() riêng. Mỗi khi mảng tasks thay đổi, hàm này sẽ quét qua mảng bằng phương thức .map() để tạo ra chuỗi HTML và cập nhật lại innerHTML của danh sách. Điều này giúp code sạch sẽ, dễ quản lý (Single Source of Truth).
+
+        2. Lưu trữ dữ liệu (LocalStorage):
+
+        Sử dụng JSON.stringify() để chuyển mảng thành chuỗi khi lưu và JSON.parse() khi tải lại trang. Điều này giúp dữ liệu của người dùng không bị mất đi khi tắt trình duyệt.
+
+        3. Thiết kế Grid & UX:
+
+        Sử dụng CSS Grid (display: grid) để tạo khoảng cách đồng đều (gap) giữa các công việc, giúp giao diện ngay ngắn và dễ nhìn.
+
+        Bổ sung phím tắt Enter để thêm việc nhanh, tăng trải nghiệm người dùng. -->
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="about.html">Giới thiệu</a>
+      <a href="baitap01.html">Carousel</a>
+      <a href="baitap02.html">To-Do List</a>
+      <a href="baitap03.html">Đoán Số</a>
+      <a href="baitap20.html" style="background: #e67e22; color: white">BT 20 (Trắc nghiệm)</a>
+      <a href="baitap21.html" style="background: #e67e22; color: white">BT 21 (Thực hành)</a>
+      <a href="contact.html">Liên hệ</a>
+    </nav>
+
+    <div class="container" style="max-width: 600px">
+      <h2 style="text-align: center; margin-bottom: 25px">📝 Danh sách công việc</h2>
+
+      <div class="input-group">
+        <input type="text" id="taskInput" placeholder="Nhập việc cần làm ngay..." autocomplete="off" />
+        <button class="btn-add" onclick="addTask()">Thêm Việc</button>
+      </div>
+
+      <div id="taskList" class="task-list"></div>
+
+      <div style="text-align: center; margin-top: 40px">
+        <a
+          href="index.html"
+          class="btn"
+          style="background: #64748b; text-decoration: none; padding: 10px 20px; font-size: 0.9rem"
+          >🏠 Về trang chủ</a
+        >
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+      let tasks = JSON.parse(localStorage.getItem("myTasks")) || [];
+
+      function render() {
+        const list = document.getElementById("taskList");
+        if (tasks.length === 0) {
+          list.innerHTML = `<p style="text-align:center; color:#94a3b8; margin-top:20px;">Chưa có công việc nào. Hãy thêm việc mới!</p>`;
+        } else {
+          list.innerHTML = tasks
+            .map(
+              (t, i) => `
+                    <div class="task-item">
+                        <span style="font-size: 1.05rem;">${t}</span>
+                        <button class="btn-del" onclick="removeTask(${i})" 
+                                style="background:#ef4444; padding: 8px 15px; font-size: 0.85rem;">Xóa</button>
+                    </div>
+                `,
+            )
+            .join("");
+        }
+        localStorage.setItem("myTasks", JSON.stringify(tasks));
+      }
+
+      function addTask() {
+        const input = document.getElementById("taskInput");
+        const value = input.value.trim();
+        if (value) {
+          tasks.push(value);
+          input.value = "";
+          render();
+        } else {
+          input.focus();
+        }
+      }
+
+      function removeTask(i) {
+        if (confirm("Bạn có chắc muốn xóa việc này?")) {
+          tasks.splice(i, 1);
+          render();
+        }
+      }
+
+      // Cho phép nhấn Enter để thêm
+      document.getElementById("taskInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") addTask();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
